@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.matrix.firebase_wish.R
 import com.matrix.firebase_wish.databinding.FragmentLoginBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -20,6 +21,10 @@ class RegisterFragment : Fragment() {
 
     @Inject
     lateinit var firebaseAuth: FirebaseAuth
+
+    @Inject
+    lateinit var firestore: FirebaseFirestore
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -47,7 +52,8 @@ class RegisterFragment : Fragment() {
         }
     }
 
-    private fun setRegister(){
+    private fun setRegister() {
+        val userRef = firestore.collection("users")
         binding.button.setOnClickListener {
             val email = binding.edtUsername.text.toString()
             val password = binding.edtPassword.text.toString()
@@ -56,18 +62,37 @@ class RegisterFragment : Fragment() {
                     .show()
             } else {
                 firebaseAuth
-                    .createUserWithEmailAndPassword(email,password)
+                    .createUserWithEmailAndPassword(email, password)
                     .addOnSuccessListener {
-                        findNavController().navigate(R.id.action_registerFragment_to_homeFragment)
+                        val user = hashMapOf(
+                            "img" to "",
+                            "name" to "",
+                            "userId" to firebaseAuth.currentUser?.uid
+                        )
+                        userRef.add(user)
+                            .addOnSuccessListener {
+                                findNavController().navigate(R.id.action_registerFragment_to_homeFragment)
+                            }
+                            .addOnFailureListener {
+                                Toast.makeText(
+                                    requireContext(),
+                                    "Something wrong happened! Try later!",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+
                     }
                     .addOnFailureListener {
-                        Toast.makeText(requireContext(),"Something wrong happened! Try later!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            requireContext(),
+                            "Something wrong happened! Try later!",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
 
             }
         }
     }
-
 
 
 }

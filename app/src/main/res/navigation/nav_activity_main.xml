@@ -46,6 +46,13 @@
             app:destination="@id/loginFragment"
             app:popUpTo="@id/nav_activity_main"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_accountFragment_to_editAccountFragment"
+            app:destination="@id/editAccountFragment"
+            app:enterAnim="@android:anim/slide_in_left"
+            app:exitAnim="@android:anim/slide_out_right"
+            app:popEnterAnim="@android:anim/slide_out_right"
+            app:popExitAnim="@android:anim/slide_in_left" />
     </fragment>
     <fragment
         android:id="@+id/singleProductFragment"
@@ -65,4 +72,9 @@
             android:id="@+id/action_registerFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/editAccountFragment"
+        android:name="com.matrix.firebase_wish.ui.fragments.EditAccountFragment"
+        android:label="EditAccountFragment"
+        tools:layout="@layout/fragment_account"/>
 </navigation>
