@@ -47,11 +47,12 @@ class HomeViewModel(
             try {
                 val productList = fetchProductList()
                 val wishlistMap = getWishlistMap()
+                var cartMap = getCartMap()
 
 
                 productList.forEach { product ->
                     product.isAdded = wishlistMap[product.id] == true
-
+                    product.isAddedCart = cartMap.contains(product.id)
                 }
 
                 _products.postValue(Resource.Success(productList))
@@ -86,13 +87,25 @@ class HomeViewModel(
     private suspend fun getWishlistMap(): Map<String, Boolean> {
         val wishRef = firestore.collection("wishlist")
         val userId = firebaseAuth.currentUser?.uid
-        val wishlistSnapshot = wishRef.whereEqualTo("userId",userId).get().await()
+        val wishlistSnapshot = wishRef.whereEqualTo("userId", userId).get().await()
         val wishlistMap = mutableMapOf<String, Boolean>()
         for (document in wishlistSnapshot.documents) {
             val productId = document.getString("productId") ?: ""
             wishlistMap[productId] = true
         }
         return wishlistMap
+    }
+
+    private suspend fun getCartMap(): List<String> {
+        val cartRef = firestore.collection("cart")
+        val userId = firebaseAuth.currentUser?.uid
+        val cartSnapshot = cartRef.whereEqualTo("userId", userId).get().await()
+        val cartMap = mutableListOf<String>()
+        for (document in cartSnapshot.documents) {
+            val productId = document.getString("productId") ?: ""
+            cartMap.add(productId)
+        }
+        return cartMap
     }
 
 
@@ -166,10 +179,8 @@ class HomeViewModel(
                 val existingDocuments = task.result
                 if (existingDocuments != null && !existingDocuments.isEmpty) {
                     val wishRef = firestore.collection("wishlist")
-
                     val documentId = existingDocuments.documents[0].id
                     wishRef.document(documentId).delete()
-
 
                 } else {
 
@@ -183,6 +194,35 @@ class HomeViewModel(
                 }
             }
         }
+    }
+
+
+    fun insertCart(productId: String) {
+        val userId = firebaseAuth.currentUser?.uid
+        val cartRef = firestore.collection("cart")
+
+        val doesExistQuery =
+            cartRef.whereEqualTo("userId", userId).whereEqualTo("productId", productId)
+        doesExistQuery.get().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val existingDocuments = task.result
+                if (existingDocuments != null && !existingDocuments.isEmpty) {
+
+                    val documentId = existingDocuments.documents[0].id
+                    cartRef.document(documentId).delete()
+
+                } else {
+                    val uuid = UUID.randomUUID().toString()
+                    val hashMap = hashMapOf(
+                        "id" to uuid,
+                        "productId" to productId,
+                        "userId" to userId
+                    )
+                    cartRef.add(hashMap)
+                }
+            }
+        }
+
     }
 
 

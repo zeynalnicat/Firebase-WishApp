@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="200dp"
+    app:cardCornerRadius="10dp"
+    android:layout_marginHorizontal="10dp"
     android:layout_marginTop="20dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -25,8 +27,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:text="TextView"
+            android:textStyle="bold"
+            android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imgProduct"
             app:layout_constraintTop_toTopOf="@+id/imgProduct" />
@@ -37,18 +42,20 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="TextView"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@+id/txtProductName"
             app:layout_constraintStart_toStartOf="@+id/txtProductName"
             app:layout_constraintTop_toBottomOf="@+id/txtProductName" />
 
         <TextView
-            android:id="@+id/txtPrice"
+            android:id="@+id/txtCategory"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="TextView"
+            android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="@+id/txtProductName"
-            app:layout_constraintStart_toStartOf="@+id/txtDescription"
+            app:layout_constraintStart_toStartOf="@+id/txtProductName"
             app:layout_constraintTop_toBottomOf="@+id/txtDescription" />
 
         <RatingBar
@@ -62,13 +69,26 @@
             app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
-            android:id="@+id/txtCategory"
+            android:id="@+id/txtPrice"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="TextView"
-            app:layout_constraintEnd_toEndOf="@+id/txtPrice"
-            app:layout_constraintStart_toStartOf="@+id/txtPrice"
-            app:layout_constraintTop_toBottomOf="@+id/txtPrice" />
+            app:layout_goneMarginTop="50dp"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            app:layout_constraintEnd_toEndOf="@+id/txtProductName"
+            app:layout_constraintStart_toStartOf="@+id/txtProductName"
+            app:layout_constraintTop_toBottomOf="@+id/txtCategory" />
+
+        <ImageView
+            android:id="@+id/iconAddCart"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginBottom="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:srcCompat="@drawable/icon_add_to_cart" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

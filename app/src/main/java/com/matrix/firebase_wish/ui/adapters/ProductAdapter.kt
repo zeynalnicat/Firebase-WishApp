@@ -11,10 +11,12 @@ import com.matrix.firebase_wish.R
 import com.matrix.firebase_wish.databinding.ItemSingleProductBinding
 import com.matrix.firebase_wish.model.Product
 
+
 class ProductAdapter(
     private val nav: (Bundle) -> Unit,
     private val insertDb: (String)
-    -> Unit
+    -> Unit,
+    private val addCart: (String) -> Unit
 ) :
     RecyclerView.Adapter<ProductAdapter.ViewHolder>() {
 
@@ -48,13 +50,21 @@ class ProductAdapter(
     inner class ViewHolder(private val binding: ItemSingleProductBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(current: Product) {
+
+
             Glide.with(binding.root).load(current.images).into(binding.imgProduct)
             binding.txtProductName.text = current.title
             binding.imgLike.setImageResource(if (current.isAdded) R.drawable.icon_heart_filled else R.drawable.icon_heart)
+            binding.iconAddCart.setImageResource(if (current.isAddedCart) R.drawable.icon_added_cart else R.drawable.icon_add_to_cart)
             binding.txtProductPrice.text = "$" + "${current.price}"
             binding.imgLike.setOnClickListener {
                 current.isAdded = !current.isAdded
                 insertDb(current.id)
+                notifyItemChanged(layoutPosition)
+            }
+            binding.iconAddCart.setOnClickListener {
+                current.isAddedCart = !current.isAddedCart
+                addCart(current.id)
                 notifyItemChanged(layoutPosition)
             }
             itemView.setOnClickListener {

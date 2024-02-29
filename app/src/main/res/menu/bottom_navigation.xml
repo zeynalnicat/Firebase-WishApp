@@ -11,8 +11,14 @@
         android:id="@+id/wishListFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:icon="@drawable/menu_heart_"
+        android:title="Wish" />
+    <item
+        android:id="@+id/cartFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:icon="@drawable/icon_wish"
-        android:title="Wish List" />
+        android:title="Cart" />
     <item
         android:id="@+id/accountFragment"
         android:layout_width="wrap_content"

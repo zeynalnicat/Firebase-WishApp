@@ -52,7 +52,7 @@ class HomeFragment : Fragment() {
             firebaseAuth,
             productDao,
 
-        )
+            )
     }
 
 
@@ -194,7 +194,8 @@ class HomeFragment : Fragment() {
                     it
                 )
             },
-            { product -> homeViewModel.insertWishList(product) }
+            { product -> homeViewModel.insertWishList(product) },
+            { product -> homeViewModel.insertCart(product) }
         )
 
         adapter.submitList(productList)

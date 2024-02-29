@@ -12,5 +12,7 @@ data class Product  (
     val rating: Double,
     val stock: Int ,
     val title: String,
-    var isAdded: Boolean = false
+    var isAdded: Boolean = false,
+    var isAddedCart:Boolean = false,
+    var isCart : Boolean = false
 ) : Serializable
